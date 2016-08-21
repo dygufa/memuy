@@ -1,0 +1,30 @@
+{
+  "name": "memuy_site",
+  "version": "1.0.0",
+  "description": "",
+  "main": " ",
+  "scripts": {
+    "start": "ws -p 5020 -d ./build -s index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dygufa/memuy_site.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dygufa/memuy_site/issues"
+  },
+  "homepage": "https://github.com/dygufa/memuy_site#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-less": "^3.1.0",
+    "gulp-minify-css": "^1.2.4",
+    "merge-stream": "^1.0.0",
+    "ws": "^1.1.1"
+  },
+  "dependencies": {
+    "jquery": "^3.1.0"
+  }
+}

@@ -1,6 +1,13 @@
 var API_ENDPOINT = "http://api.devmemuy.com:5010";
+var IMAGE_MIMETYPES = ["image/jpeg", "image/png"];
 
-$('#mainLoad').fadeIn(1000);
+/**
+ *  Utils
+ **/
+
+String.prototype.trunc = function(n) {
+    return this.substr(0, n - 1) + (this.length > n ? '&hellip;' : '');
+};
 
 var rand = function() {
     return Math.random().toString(36).substr(2);
@@ -9,16 +16,6 @@ var rand = function() {
 var token = function() {
     return rand() + rand();
 };
-
-var socket = io(API_ENDPOINT),
-    currentRoom = null,
-    roomOnPath,
-    identifier = token(),
-    qrcodeObj = null;
-
-socket.on('connect_error', function() {
-    console.log('Failed to connect to server');
-});
 
 secondsToTime = function(seconds) {
     var hours = parseInt( seconds / 3600 ) % 24;
@@ -41,35 +38,45 @@ generateQRCode = function(room) {
             colorDark : "#000000",
             colorLight : "#ffffff",
             correctLevel : QRCode.CorrectLevel.H
-        })
+        });
     } else {
-        qrcodeObj.makeCode(room)
+        qrcodeObj.makeCode(room);
     }
-}
+};
+
+sizeOf = function(bytes) {
+    if (bytes == 0) {
+        return "0.00 b";
+    }
+    var e = Math.floor(Math.log(bytes) / Math.log(1000));
+    return parseFloat((bytes / Math.pow(1000, e)).toFixed(1)) + ' kmgtp'.charAt(e) + 'b';
+};
+
+/**
+ *  Important stuff
+ **/
+
+// Show loading icon
+$('#mainLoad').fadeIn(1000);
+
+// Open socket connection
+var socket = io(API_ENDPOINT),
+    currentRoom = null,
+    roomOnPath,
+    identifier = token(),
+    qrcodeObj = null;
+
+socket.on('connect_error', function() {
+    console.log('Failed to connect to server');
+});
+
+roomOnPath = window.location.pathname.replace('/', '');
+roomTimeLeft = 1000;
+numberOfFiles = 0;
 
 tryRoom = function(room, type) {
     socket.emit('tryRoom', room, {type: type})
 }
-
-adjustPreviewAfterSave = function(element, fileObj) {
-    var fileElement = $(element),
-        link = fileObj.location
-
-    //console.log(fileElement.innerHTML, fileObj);
-    fileElement.find('.file-link').attr('href', link)
-}
-
-addFile = function(fileObj) {
-    //console.log(fileObj);
-    var mockFile = {name: fileObj.originalName, size: fileObj.size}
-    myDropzone.emit("addedfile", mockFile);
-    myDropzone.emit("complete", mockFile);
-
-    adjustPreviewAfterSave(mockFile.previewElement, fileObj)
-}
-
-roomOnPath = window.location.pathname.replace('/', '');
-roomTimeLeft = 1000;
 
 if (roomOnPath == '') {
     socket.emit('newRoom')
@@ -77,13 +84,49 @@ if (roomOnPath == '') {
     tryRoom(roomOnPath, 'url')
 }
 
+adjustPreviewAfterSave = function(element, fileObj) {
+    var fileElement = $(element),
+        link = fileObj.location
+
+    fileElement.find('.file-link').attr('href', link)
+}
+
+addUploadedFile = function(fileObj) {
+    var cFileObj = {
+        elementId: "file-" + fileObj._id,
+        name: fileObj.originalName,
+        mimetype: fileObj.mimetype,
+        size: fileObj.size,
+        location: fileObj.location,
+        thumbnail: false
+    };
+
+    if (IMAGE_MIMETYPES.indexOf(fileObj.mimetype) !== -1) {
+        cFileObj.thumbnail = {
+            type: "url",
+            data: fileObj.location
+        };
+    }
+
+    addFile(cFileObj);
+};
+
+addFile = function(fileObj) {
+    if (numberOfFiles == 0) {
+        $("#cloud").fadeOut(750);
+        $("#file-send-file").fadeIn(10);
+    }
+
+    $("#file-send-file").after(generateFilePreview(fileObj));
+}
+
 socket.on('roomData', function(roomObj) {
-    console.log(roomObj);
+    // console.log(roomObj);
     var roomName = roomObj.room;
     currentRoom = roomName;
     roomTimeLeft = roomObj.timeLeft;
     $('#roomName').val(roomName);
-    $('#spaceStats').html(roomObj.usedSpace / 1000 + "/" + roomObj.maxSpace / 1000 + "mb");
+    $('#spaceStats').html(sizeOf(roomObj.usedSpace) + "/" + sizeOf(roomObj.maxSpace));
     generateQRCode(roomName);
 
     window.history.pushState({}, 'Memuy', '/' + roomName);
@@ -96,14 +139,18 @@ socket.on('roomData', function(roomObj) {
         roomTimeLeft--;
     }, 1000);
 
+    numberOfFiles = roomObj.files.length;
+
     setTimeout(function() {
-        $('#mainLoad').fadeOut(750, function() {
+        $('#mainLoad').fadeOut(500, function() {
             if (roomObj.files.length === 0) {
-                $("#cloud").fadeIn(1000);
+                $("#cloud").fadeIn(1000).css("display","flex");
+            } else {
+                $("#file-send-file").fadeIn(10);
             }
 
             roomObj.files.forEach(function(file) {
-                addFile(file)
+                addUploadedFile(file)
             });
         });
     }, 750);
@@ -111,10 +158,8 @@ socket.on('roomData', function(roomObj) {
 });
 
 socket.on('newFile', function(res) {
-    console.log('teste2');
     if (res.identifier != identifier) {
-        console.log('teste3');
-        addFile(res.file)
+        addUploadedFile(res.file)
     }
 })
 
@@ -129,7 +174,8 @@ socket.on('roomError', function(errorCode) {
         msg = 'Sorry! I cannot find this room. :('
     }
 
-    $('#msg').html(msg).show()
+    alert(msg);
+    $('#msg').html(msg).show();
 })
 
 $('body').on('click', '.goToNewRoom', function () {
@@ -146,59 +192,93 @@ $('form').submit(function(){
     return false
 });
 
+/**
+ *  Dropzone
+ **/
+
+var dragCounter = 0;
+
+function generateFilePreview(file) {
+    var filePreview = "";
+
+    filePreview += "<div class=\"file\" id=\"" + file.elementId + "\">";
+        filePreview += "<div class=\"avatar\">";
+            if (file.thumbnail) {
+                filePreview += "<div class=\"avatar-img\" style=\"background-image: url(" + file.thumbnail.data + ");\"></div>";
+            } else {
+                filePreview += "<div class=\"avatar-icon\"><span class=\"icon-file-o\"></span></div>";
+            }
+        filePreview += "</div>";
+        filePreview += "<div class=\"info\">";
+            filePreview += "<a href=\"" + file.location + "\" target=\"_blank\" class=\"file-link\">" + file.name + "</a>";
+            filePreview += "<span>" + sizeOf(file.size) + "</span>";
+        filePreview += "</div>";
+    filePreview += "</div>";
+
+    return filePreview;
+};
+
 function enableDraggingScreen() {
     $('#draggingFile').css('display', 'block');
     $('body').css('overflow', 'hidden');
-}
+};
 
 function disableDraggingScreen() {
     $('#draggingFile').css('display', 'none');
     $('body').css('overflow', 'auto');
-}
-
-
-var counter = 0;
+};
 
 var myDropzone = new Dropzone(document.body, {
     method: 'post',
     url: API_ENDPOINT + "/files",
     maxFilesize: 5000,
-    previewsContainer: ".dropzone-previews",
-    previewTemplate: document.querySelector('#template-container').innerHTML,
     clickable: '.send-file',
+    addedfile: function(file) {
+        file.elementId = "file-" + token();
+
+        var cFileObj = {
+            elementId: file.elementId,
+            name: file.name,
+            mimetype: file.mimetype,
+            size: file.size,
+            location: "#",
+            thumbnail: false
+        };
+
+        addFile(cFileObj);
+        console.log("addedfile", file);
+    },
+    thumbnail: function(file, dataUrl) {
+        $("#" + file.elementId + " .avatar").html("<div class=\"avatar-img\" style=\"background-image: url(" + dataUrl + ");\"></div>");
+    },
     sending: function(file, xhr, formData) {
-        console.log('teste20');
         formData.append('roomName', currentRoom)
         formData.append('identifier', identifier)
     },
-    success: function(file, res) {
-        console.log('teste1');
-        $(file.previewElement).attr('id', 'file-' + res.file._id)
-        adjustPreviewAfterSave(file.previewElement, res.file)
-    },
     uploadprogress: function(file, progress, bytesSent) {
-        console.log('teste25', progress);
         $(file.previewElement).find('.file-progress').html(progress)
+    },
+    success: function(file, res) {
+        console.log("aha", file, res);
+        //$(file.previewElement).attr('id', 'file-' + res.file._id)
+        //adjustPreviewAfterSave(file.previewElement, res.file)
     },
     dragenter: function(event) {
         event.preventDefault(); // needed for IE
-        counter++;
+        dragCounter++;
         enableDraggingScreen();
     },
     dragleave: function(event) {
-        console.log(2, counter);
-        counter--;
-        if (counter === 0) {
+        dragCounter--;
+        if (dragCounter === 0) {
             disableDraggingScreen();
         }
 
     },
     dragend: function(event) {
-        console.log(3);
         disableDraggingScreen();
     },
     drop: function(event) {
-        console.log(3);
         disableDraggingScreen();
     }
 });

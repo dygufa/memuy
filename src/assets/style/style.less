@@ -1,4 +1,5 @@
 @blue: #6eb6ff;
+@blue2: #578fcc;
 @pink: #ff0072;
 @white: #ffffff;
 @black: #000000;
@@ -159,28 +160,100 @@ body {
 }
 
 #files {
-	margin-top: 30px;
+	margin: 30px -10px;
 	display: flex;
 	flex-wrap: wrap;
 	position: relative;
-	justify-content: space-between;
 
 	.file {
 		background: @white;
 		padding: 20px;
 		color: @black;
 		margin: 10px;
+		border-radius: 5px;
+		// width: 170px;
+		height: 140px;
+		flex: 1 0 200px;
+
+		&#file-send-file {
+			color: @blue2;
+			display: none;
+
+			.cloud {
+				cursor: pointer;
+				background-image: url("../img/blue-cloud.png");
+				background-size: cover;
+				background-repeat: no-repeat;
+				width: 103px;
+				height: 95px;
+				margin: 0 auto;
+			}
+
+			.clooud-label {
+				font-size: 1.2em;
+				margin-top: 15px;
+				text-align: center;
+				cursor: pointer;
+			}
+		}
+
+		.avatar {
+			width: 100%;
+			height: 120px;
+
+			.avatar-img {
+				width: 100%;
+				height: 120px;
+				background-size: cover;
+				background-position: center;
+			}
+
+			.avatar-icon {
+				text-align: center;
+
+				span {
+					font-size: 100px;
+					color: @blue2;
+				}
+			}
+		}
+
+		.info {
+			margin-top: 7px;
+			color: @blue2;
+			display: flex;
+			justify-content: space-between;
+
+			a {
+				color: @blue2;
+				text-decoration: none;
+				font-size: 13px;
+				width: 140px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: block;
+			}
+		}
 	}
 
 	#cloud {
-		background-image: url("../img/nuvem.png");
+		cursor: pointer;
+		background-image: url("../img/cloud.png");
+		background-repeat: no-repeat;
 		position: absolute;
 		top: 100px;
 		left: 50%;
 		width: 148px;
-		height: 137px;
+		height: 180px;
 		margin-left: -74px;
 		display: none;
+		flex-flow: row;
+		justify-content: center;
+		align-items: flex-end;
+		text-align: center;
+		font-size: 1.2em;
+		color: @white;
 	}
 }
 
@@ -263,5 +336,26 @@ body {
 				}
 			}
 		}
+	}
+}
+
+@media (min-width: 410px) {
+	#files .file {
+		max-width: calc(~"50% - 60px");
+	}
+}
+@media (min-width: 650px) {
+	#files .file {
+		max-width: calc(~"(100%/3) - 60px");
+	}
+}
+@media (min-width: 850px) {
+	#files .file {
+		max-width: calc(~"25% - 60px");
+	}
+}
+@media (min-width: 1100px) {
+	#files .file {
+		max-width: calc(~"20% - 60px");
 	}
 }

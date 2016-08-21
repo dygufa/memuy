@@ -4,8 +4,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8" />
 	<title>Memuy</title>
-	<script src="https://use.fontawesome.com/4aa6260e74.js"></script>
-	<link rel="stylesheet" href="assets/style/style.css"/>
+	<link rel="stylesheet" href="assets/style/styles.css"/>
 </head>
 <body>
 	<div id="mainContainer">
@@ -39,19 +38,20 @@
 
 	    <div id="file-container">
 			<div id="files" class="dropzone-previews">
-				<div id="cloud" class="send-file"></div>
-			</div>
-		</div>
+				<div id="file-send-file" class="file">
+					<div class="cloud send-file"></div>
+					<div class="clooud-label send-file">Arraste ou clique aqui para fazer upload</div>
+				</div>
 
-		<div id="template-container">
-			<div class="file">
-				<a href="#" target="_blank" class="file-link" data-dz-name></a> <span data-dz-size></span> <span class="file-progress"></span>
+				<div id="cloud" class="send-file">
+					<span>Arraste ou clique para fazer upload</span>
+				</div>
 			</div>
 		</div>
 	</div>
 
 	<script src="./assets/js/socket.io.js"></script>
-	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+	<script src="./assets/js/jquery.min.js"></script>
 	<script src="./assets/js/dropzone.js"></script>
 	<script src="./assets/js/qrcode.min.js"></script>
 	<script src="./assets/js/app.js"></script>

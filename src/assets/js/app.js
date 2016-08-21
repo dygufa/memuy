@@ -98,7 +98,8 @@ addUploadedFile = function(fileObj) {
         mimetype: fileObj.mimetype,
         size: fileObj.size,
         location: fileObj.location,
-        thumbnail: false
+        thumbnail: false,
+        status: "uploaded"
     };
 
     if (IMAGE_MIMETYPES.indexOf(fileObj.mimetype) !== -1) {
@@ -164,18 +165,17 @@ socket.on('newFile', function(res) {
 })
 
 socket.on('roomError', function(errorCode) {
-    var msg
+    // var msg
+    //
+    // if (errorCode == 4041) {
+    //     //msg = 'Foi mal! Não estou encontrando esta sala. Por questões de segurança não é possível personalizar o nome de uma sala. Clique <a href="#" class="gotoNewRoom">aqui</a> para entrar em uma nova sala.'
+    //     msg = 'Sorry! I cannot find this room and for security reasons it\'s not possible to personalize the name of the rooms. Click <a href="#" class="gotoNewRoom">here</a> to go to a new random room.';
+    // } else if (errorCode == 4042) {
+    //     //msg = 'Foi mal! Não encontrei esta sala.'
+    //     msg = 'Sorry! I cannot find this room. :('
+    // }
 
-    if (errorCode == 4041) {
-        //msg = 'Foi mal! Não estou encontrando esta sala. Por questões de segurança não é possível personalizar o nome de uma sala. Clique <a href="#" class="gotoNewRoom">aqui</a> para entrar em uma nova sala.'
-        msg = 'Sorry! I cannot find this room and for security reasons it\'s not possible to personalize the name of the rooms. Click <a href="#" class="gotoNewRoom">here</a> to go to a new random room.';
-    } else if (errorCode == 4042) {
-        //msg = 'Foi mal! Não encontrei esta sala.'
-        msg = 'Sorry! I cannot find this room. :('
-    }
-
-    alert(msg);
-    $('#msg').html(msg).show();
+    $('#error-page').css("display", "flex");
 })
 
 $('body').on('click', '.goToNewRoom', function () {
@@ -200,8 +200,9 @@ var dragCounter = 0;
 
 function generateFilePreview(file) {
     var filePreview = "";
+    var uploadingClass = (file.status === "uploading" ? "uploading" : "");
 
-    filePreview += "<div class=\"file\" id=\"" + file.elementId + "\">";
+    filePreview += "<div class=\"file "+ uploadingClass + "\" id=\"" + file.elementId + "\">";
         filePreview += "<div class=\"avatar\">";
             if (file.thumbnail) {
                 filePreview += "<div class=\"avatar-img\" style=\"background-image: url(" + file.thumbnail.data + ");\"></div>";
@@ -213,6 +214,7 @@ function generateFilePreview(file) {
             filePreview += "<a href=\"" + file.location + "\" target=\"_blank\" class=\"file-link\">" + file.name + "</a>";
             filePreview += "<span>" + sizeOf(file.size) + "</span>";
         filePreview += "</div>";
+        filePreview += "<div class=\"upload-status\">Sending... <span class=\"progress\">56%</span></div>";
     filePreview += "</div>";
 
     return filePreview;
@@ -242,11 +244,11 @@ var myDropzone = new Dropzone(document.body, {
             mimetype: file.mimetype,
             size: file.size,
             location: "#",
-            thumbnail: false
+            thumbnail: false,
+            status: "uploading"
         };
 
         addFile(cFileObj);
-        console.log("addedfile", file);
     },
     thumbnail: function(file, dataUrl) {
         $("#" + file.elementId + " .avatar").html("<div class=\"avatar-img\" style=\"background-image: url(" + dataUrl + ");\"></div>");
@@ -256,10 +258,16 @@ var myDropzone = new Dropzone(document.body, {
         formData.append('identifier', identifier)
     },
     uploadprogress: function(file, progress, bytesSent) {
-        $(file.previewElement).find('.file-progress').html(progress)
+        if (progress === 100) {
+            $("#" + file.elementId).find('.upload-status').html("Processing...");
+        } else {
+            $("#" + file.elementId).find('.progress').html(progress + "%");
+        }
     },
     success: function(file, res) {
         console.log("aha", file, res);
+        $("#" + file.elementId).removeClass("uploading");
+        $("#" + file.elementId).find('.file-link').attr("href", res.file.location);
         //$(file.previewElement).attr('id', 'file-' + res.file._id)
         //adjustPreviewAfterSave(file.previewElement, res.file)
     },

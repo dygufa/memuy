@@ -174,6 +174,29 @@ body {
 		// width: 170px;
 		height: 140px;
 		flex: 1 0 200px;
+		position: relative;
+
+		.upload-status {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			font-size: 20px;
+			top: 0;
+			left: 0;
+			background-color: rgba(255, 255, 255, 0.7);
+			width: 100%;
+			height: 100%;
+			border-radius: 5px;
+			display: none;
+		}
+
+		&.uploading {
+			.upload-status {
+				display: flex;
+				color: @pink;
+			}
+		}
 
 		&#file-send-file {
 			color: @blue2;
@@ -254,6 +277,40 @@ body {
 		text-align: center;
 		font-size: 1.2em;
 		color: @white;
+	}
+}
+
+#error-page {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: @blue;
+	z-index: 100;
+	display: none;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+
+
+	.logo {
+		text-indent: -9999px;
+		background: url("../img/logo.png");
+		width: 212px;
+		height: 54px;
+	}
+
+	.error-msg {
+		margin-top: 60px;
+		font-size: 30px;
+		width: 50vw;
+		text-align: center;
+
+		a {
+			color: @pink;
+			text-decoration: none;
+		}
 	}
 }
 

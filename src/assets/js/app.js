@@ -1,4 +1,5 @@
-var API_ENDPOINT = "http://api.devmemuy.com:5010";
+//var API_ENDPOINT = "http://api.devmemuy.com:5010";
+var API_ENDPOINT = "https://api.memuy.com/";
 var IMAGE_MIMETYPES = ["image/jpeg", "image/png"];
 
 /**
@@ -232,7 +233,7 @@ function disableDraggingScreen() {
 
 var myDropzone = new Dropzone(document.body, {
     method: 'post',
-    url: API_ENDPOINT + "/files",
+    url: API_ENDPOINT + "files",
     maxFilesize: 5000,
     clickable: '.send-file',
     addedfile: function(file) {
@@ -261,7 +262,7 @@ var myDropzone = new Dropzone(document.body, {
         if (progress === 100) {
             $("#" + file.elementId).find('.upload-status').html("Processing...");
         } else {
-            $("#" + file.elementId).find('.progress').html(progress + "%");
+            $("#" + file.elementId).find('.progress').html(progress.toFixed(1) + "%");
         }
     },
     success: function(file, res) {

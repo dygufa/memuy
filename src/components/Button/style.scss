@@ -1,0 +1,24 @@
+@import "global-style.scss";
+
+.button {
+    text-transform: uppercase;
+    background: none;
+    outline: none;
+    border-radius: 4px;
+    padding: 0.4em 0.6em;
+    letter-spacing: 1px;
+    font-size: 1.0em;
+    cursor: pointer;
+    border: 2px solid white;
+
+    &.white {      
+        border-color: white;  
+        color: white;
+    }
+
+    &.secondary {
+        border-color: $secondary-color;
+        color: $secondary-color;
+    }
+}
+        

@@ -1,0 +1,20 @@
+@import "global-style.scss";
+
+.statusBar {
+    display: flex;    
+    align-items: center;
+
+    .infoBar {
+        margin-right: 40px;
+        font-size: 1em;
+    }
+
+    .roomUrl {
+        font-size: 1.3em;
+        margin-right: 20px;
+    }
+
+    .buttonWrapper {
+        font-size: 1.3em;
+    }
+}

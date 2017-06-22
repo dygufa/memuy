@@ -1,0 +1,16 @@
+@import "global-style.scss";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: $primary-color;
+    font-family: 'Roboto', sans-serif;
+    font-size: 10px;
+}
+
+.container {
+    padding: 50px;
+}

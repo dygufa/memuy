@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IRoom } from "../../stores/RoomStore";
+import { Room } from "../../vendor/api";
 import { inject, observer } from "mobx-react";
 
 /**
@@ -19,7 +19,7 @@ const s = require("./style.scss");
  */
 
 interface IStatusBarProps {
-    room: IRoom;
+    room: Room;
 };
 
 interface IStatusBarState {};
@@ -40,7 +40,7 @@ class StatusBar extends React.Component<IStatusBarProps, IStatusBarState> {
                 </div>
 
                 <div className={s.roomUrl}>
-                    <span>memuy.com/</span>{room ? room.room : "aa"}                    
+                    <span>memuy.com/</span>{room ? room.name : "aa"}                    
                 </div>
 
                 <div className={s.buttonWrapper}>

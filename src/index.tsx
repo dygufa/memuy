@@ -22,7 +22,7 @@ const rootStores = {
 const history = syncHistoryWithStore(browserHistory, routingStore);
 
 ReactDOM.render(
-    <Provider {...rootStores}>
+<Provider {...rootStores}>
     <Router history={history}>
         <Route path="/" component={App}>
             <Route path="/:roomId" component={DropFile}/>

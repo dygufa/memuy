@@ -30,11 +30,15 @@ interface IHeaderState {};
 @observer
 class Header extends React.Component<IHeaderProps, IHeaderState> {
     public render(): JSX.Element {
+        if (!this.props.roomStore!.room) {
+            return <div>Carregando...</div>;
+        }
+        
         return (
             <header className={s.header}>
                 <Logo/>
                 <div className={s.helperBars}>
-                    <StatusBar room={this.props.roomStore.room}/>
+                    <StatusBar room={this.props.roomStore!.room!}/>
                 </div>
             </header>
         );

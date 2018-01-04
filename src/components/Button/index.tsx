@@ -19,7 +19,7 @@ class Button extends React.Component<IButtonProps, IButtonState> {
     }
     public render(): JSX.Element {
         return (
-            <button className={[s.button, s[this.props.color]].join(" ")} onClick={this.props.onClick}>
+            <button className={[s.button, s[this.props.color || ""]].join(" ")} onClick={this.props.onClick}>
                 {this.props.children}
             </button>
         );

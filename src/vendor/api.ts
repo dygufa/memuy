@@ -1,6 +1,7 @@
-const io = require("socket.io-client");
+import * as io from "socket.io-client";
+import { Observable } from 'rxjs/Observable';
 
-const API_ENDPOINT = process.env.NODE_ENV === "development" ? "http://localhost:8080/v1" : "https://api.memuy.com/v1";
+const API_ENDPOINT = process.env.NODE_ENV === "development" ? "http://localhost:9090/v2" : "https://api.memuy.com/v2";
 const socket = io(API_ENDPOINT);
 
 export interface ApiResponse<Payload> {
@@ -39,4 +40,14 @@ export const getRandomRoom = (): Promise<ApiResponse<Room>> => {
             "Accept": "application/json, text/plain, */*"
         },
     }).then(res => res.json());
+}
+
+export const listenRoom = (roomName: string): Observable<File[]> => {
+    socket.emit("joinRoom", roomName);
+
+    return Observable.create((observer: any) => {
+        socket.on("newFile", (res: any) => {
+            observer.next(res)
+        });
+    });
 }

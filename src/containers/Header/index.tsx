@@ -29,6 +29,10 @@ interface IHeaderState {};
 @inject("roomStore")
 @observer
 class Header extends React.Component<IHeaderProps, IHeaderState> {
+    private onNewRoom() {
+        this.props.roomStore!.getNewRoom();
+    }
+
     public render(): JSX.Element {
         if (!this.props.roomStore!.room) {
             return <div>Carregando...</div>;
@@ -38,7 +42,10 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
             <header className={s.header}>
                 <Logo/>
                 <div className={s.helperBars}>
-                    <StatusBar room={this.props.roomStore!.room!}/>
+                    <StatusBar 
+                        room={this.props.roomStore!.room!}
+                        onNewRoom={() => this.onNewRoom()}
+                    />
                 </div>
             </header>
         );

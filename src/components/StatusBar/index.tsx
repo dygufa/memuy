@@ -20,6 +20,7 @@ const s = require("./style.scss");
 
 interface IStatusBarProps {
     room: Room;
+    onNewRoom: () => void;
 };
 
 interface IStatusBarState {};
@@ -44,7 +45,7 @@ class StatusBar extends React.Component<IStatusBarProps, IStatusBarState> {
                 </div>
 
                 <div className={s.buttonWrapper}>
-                    <NewRoomButton onClick={() => false}/>
+                    <NewRoomButton onClick={this.props.onNewRoom}/>
                 </div>
             </div>
         );

@@ -7,22 +7,17 @@ import {Router, Route, IndexRoute, browserHistory} from "react-router";
 import {Provider} from "mobx-react";
 import {syncHistoryWithStore} from "mobx-react-router";
 
-import {RoomStore, RouterStore} from "./stores";
+import { RootStore } from "./stores";
 
 import App from "./containers/App";
 import DropFile from "./containers/DropFile";
 
-const routingStore = new RouterStore();
-const roomStore = new RoomStore();
-const rootStores = {
-    roomStore: roomStore,
-    routingStore: routingStore
-};
+const rootStore = new RootStore();
 
-const history = syncHistoryWithStore(browserHistory, routingStore);
+const history = syncHistoryWithStore(browserHistory, rootStore.routerStore);
 
 ReactDOM.render(
-<Provider {...rootStores}>
+<Provider {...rootStore}>
     <Router history={history}>
         <Route path="/" component={App}>
             <Route path="/:roomId" component={DropFile}/>

@@ -1,21 +1,31 @@
 import { observable, computed, action } from "mobx";
 import { secondsToTime } from "../helpers/utils";
-import { Room } from "../vendor/api";
+import * as api from "../vendor/api";
+import { RootStore } from "./";
 
 export class RoomStore {
-    @observable room: Room | null = null;
+    rootStore: RootStore;
+    @observable room: api.Room | null = null;
 
-    constructor() {     
-        
+    constructor(rootStore: RootStore) {
+        this.rootStore = rootStore;     
+        this.getNewRoom();
     }
 
+    async getNewRoom() {
+        const room = await api.getRandomRoom();
+        if (room) {
+            this.rootStore.routerStore.push(`/${room.data!.name}`);
+            this.room = room.data!;
 
-    getNewRoom() {
-        
+            api.listenRoom(room.data!.name).subscribe(file => {
+
+            });
+        }
     }
 
-    getRoom(roomId: string) {
-        
+    getRoom(roomName: string) {
+
     }
 
     @computed

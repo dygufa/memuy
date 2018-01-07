@@ -21,17 +21,17 @@ const s = require("./style.scss");
 
 interface IAppProps {
     roomStore: RoomStore;
-    routingStore: RouterStore;
+    routerStore: RouterStore;
     params: any;
 }
 
 interface IAppState {};
 
-@inject("routingStore", "roomStore")
+@inject("routerStore", "roomStore")
 @observer
 export default class App extends React.Component<IAppProps, IAppState> {
     componentDidMount() {
-        const { location, push, goBack } = this.props.routingStore;
+        const { location, push, goBack } = this.props.routerStore;
         const roomId = this.props.params.roomId;
 
         if (!roomId) {

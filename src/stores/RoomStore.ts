@@ -1,4 +1,4 @@
-import { observable, computed, action } from "mobx";
+import { observable, computed, action, toJS } from "mobx";
 import { secondsToTime } from "../helpers/utils";
 import * as api from "../vendor/api";
 import { RootStore } from "./";
@@ -9,7 +9,6 @@ export class RoomStore {
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;     
-        this.getNewRoom();
     }
 
     async getNewRoom() {
@@ -24,8 +23,12 @@ export class RoomStore {
         }
     }
 
-    getRoom(roomName: string) {
-
+    async getRoom(roomName: string) {
+        const room = await api.getRoom(roomName);
+        if (room) {
+            this.room = room.data!;
+        }
+        console.log(toJS(this.room));
     }
 
     @computed

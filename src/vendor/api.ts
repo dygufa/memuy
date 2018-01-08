@@ -20,6 +20,7 @@ export interface Room {
     maxSpace: number
     files: File[]
     createdAt: Date
+    expiresOn: Date
 }
 
 export interface File {
@@ -33,13 +34,37 @@ const getToken = () => {
     return localStorage.getItem("jwt");
 };
 
+const parseDates = <T>(object: ApiResponse<T>, properties: string[]) => {
+    const data: T & { [key: string]: any } = Object.assign({}, object.data);
+    for (let property of properties) {
+        data[property] = new Date(data[property]);
+    }
+    object.data = data;
+    return object;
+};
+
 export const getRandomRoom = (): Promise<ApiResponse<Room>> => {
     return fetch(API_ENDPOINT + "/rooms", {
         method: "POST",
         headers: {
             "Accept": "application/json, text/plain, */*"
         },
-    }).then(res => res.json());
+    }).then(async (res) => {
+        const json = await res.json() as ApiResponse<Room>;
+        return parseDates<Room>(json, ["createdAt", "expiresOn"]);
+    });
+}
+
+export const getRoom = (roomName: string): Promise<ApiResponse<Room>> => {
+    return fetch(API_ENDPOINT + "/rooms/" + roomName, {
+        method: "GET",
+        headers: {
+            "Accept": "application/json, text/plain, */*"
+        },
+    }).then(async (res) => {
+        const json = await res.json() as ApiResponse<Room>;
+        return parseDates<Room>(json, ["createdAt", "expiresOn"]);
+    });
 }
 
 export const listenRoom = (roomName: string): Observable<File[]> => {

@@ -2,12 +2,14 @@ import * as React from "react";
 import { inject, observer } from "mobx-react";
 import { RoomStore } from "../../stores";
 import { RouterStore } from "mobx-react-router";
+import { match } from "react-router-dom";
 
 /**
  * Component
  */
 
 import Header from "../Header/";
+import DropFile from "../DropFile/";
 
 /** 
  * Style
@@ -20,9 +22,11 @@ const s = require("./style.scss");
  */
 
 interface IAppProps {
-    roomStore: RoomStore;
-    routerStore: RouterStore;
-    params: any;
+    roomStore?: RoomStore;
+    routerStore?: RouterStore;
+    match?: match<{
+        roomId: string
+    }>;
 }
 
 interface IAppState {};
@@ -31,13 +35,13 @@ interface IAppState {};
 @observer
 export default class App extends React.Component<IAppProps, IAppState> {
     componentDidMount() {
-        const { location, push, goBack } = this.props.routerStore;
-        const roomId = this.props.params.roomId;
+        const { location, push, goBack } = this.props.routerStore!;
+        const roomId = this.props.match!.params.roomId;
 
         if (!roomId) {
-            this.props.roomStore.getNewRoom();
+            this.props.roomStore!.getNewRoom();
         } else {
-            this.props.roomStore.getRoom(roomId);
+            this.props.roomStore!.getRoom(roomId);
         }
     }
 
@@ -45,7 +49,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
         return (
             <div className={s.container}>
                 <Header/>
-                {this.props.children}
+                <DropFile/>
             </div>
         );
     }

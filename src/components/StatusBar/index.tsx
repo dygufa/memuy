@@ -1,6 +1,9 @@
 import * as React from "react";
 import { Room } from "../../vendor/api";
 import { inject, observer } from "mobx-react";
+const fileSize = require("file-size");
+const Countdown = require("react-countdown-now").default;
+import * as prettyMs from "pretty-ms";
 
 /**
  * Components
@@ -29,15 +32,19 @@ interface IStatusBarState {};
 class StatusBar extends React.Component<IStatusBarProps, IStatusBarState> {
     public render(): JSX.Element {
         const room = this.props.room;
-        console.log(JSON.stringify(room));
-        console.log(room);
 
         return (
             <div className={s.statusBar}>
                 <div className={s.infoBar}>
-                    Store limit: <span id="spaceStats"></span>
+                    Store limit: {fileSize(room.usedSpace).human()}/{fileSize(room.maxSpace).human()}
                     <br/>
-                    Remaining room time: <span id="timeLeft"></span>
+                    Remaining room time: 
+                    <Countdown 
+                        date={room.expiresOn}
+                        renderer={(total: any) => {
+                            return " " + prettyMs(total.total);
+                        }}
+                    />
                 </div>
 
                 <div className={s.roomUrl}>

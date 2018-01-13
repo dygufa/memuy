@@ -5,9 +5,7 @@ import { inject, observer } from "mobx-react";
  * Components
  */
 
-import Button from "../../components/Button/";
-import Loading from "../../components/Loading/";
-import SendFile from "../../components/SendFile/";
+import FileBox from "../../components/FileBox/";
 
 /** 
  * Style
@@ -21,19 +19,10 @@ export default class Files extends React.Component<any, {}> {
     render() {
         return (
             <div className={s.files}>               
-                    <div id="files" className="dropzone-previews">
-                        <div id="file-send-file" className="file">
-                            <div className="cloud send-file"></div>
-                            <div className="clooud-label send-file">Arraste ou clique aqui para fazer upload</div>
-                        </div>
-
-                        
-                    </div>
+                <FileBox/>
+                <FileBox />
+                <FileBox />
             </div>
         );
-     }
-
-     onReset = () => {
-         this.props.roomStore.resetTimer();
-     }
+    }
 };

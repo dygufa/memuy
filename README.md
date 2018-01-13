@@ -11,4 +11,5 @@ In order to run webpack-dev-server on port 7005 you need to execute: `npm run de
 
 ## TODO:
 - [ ] Server-side rendering
+- [ ] PWA
 

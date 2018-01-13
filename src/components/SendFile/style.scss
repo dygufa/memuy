@@ -1,0 +1,22 @@
+.cloud {
+	cursor: pointer;
+	background-repeat: no-repeat;
+	width: 148px;
+	height: 180px;
+	flex-flow: row;
+	justify-content: center;
+	align-items: flex-end;
+	text-align: center;
+	font-size: 1.2em;
+	display: flex;
+	
+	&.white {
+		background-image: url("./cloud.png");
+		color: #fff;
+	}
+
+	&.blue {
+		background-image: url("./blue-cloud.png");
+		color: #578fcc;
+	}
+}

@@ -17,10 +17,14 @@ const s = require("./style.scss");
 
 @inject("roomStore")
 @observer
-export default class Files extends React.Component<any, {}> {
+export default class Main extends React.Component<any, {}> {
     render() {
         return (
-            <div className={s.files}>               
+            <div>
+                <Loading/>
+                <SendFile color="white"/>
+
+                <div id="file-container">
                     <div id="files" className="dropzone-previews">
                         <div id="file-send-file" className="file">
                             <div className="cloud send-file"></div>
@@ -29,6 +33,7 @@ export default class Files extends React.Component<any, {}> {
 
                         
                     </div>
+                </div>
             </div>
         );
      }

@@ -9,7 +9,7 @@ import { match } from "react-router-dom";
  */
 
 import Header from "../Header/";
-import Files from "../Files/";
+import Main from "../Main/";
 
 /** 
  * Style
@@ -49,7 +49,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
         return (
             <div className={s.container}>
                 <Header/>
-                <Files/>
+                <Main/>
             </div>
         );
     }

@@ -14,7 +14,6 @@ const browserHistory = createBrowserHistory()
 import { RootStore } from "./stores";
 
 import App from "./containers/App";
-import DropFile from "./containers/DropFile";
 
 const rootStore = new RootStore();
 
@@ -23,6 +22,6 @@ const history = syncHistoryWithStore(browserHistory, rootStore.routerStore);
 ReactDOM.render(
 <Provider {...rootStore}>
     <Router history={history}>
-        <Route path="/:roomId" component={App} />
+        <Route path="/:roomId?" component={App} />
     </Router>
 </Provider>, document.getElementById('root'));

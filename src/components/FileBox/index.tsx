@@ -10,7 +10,7 @@ class FileBox extends React.Component<IFileBoxProps, IFileBoxState> {
     public render(): JSX.Element {
         return (
             <div className={s.filebox}>
-            a
+                {this.props.children}
             </div>
         );
     }

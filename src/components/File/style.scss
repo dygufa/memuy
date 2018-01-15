@@ -1,7 +1,7 @@
 @import "global-style.scss";
 
 .file {
-    .upload-status {
+    .uploadStatus {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -17,7 +17,7 @@
     }
 
     &.uploading {
-        .upload-status {
+        .uploadStatus {
             display: flex;
             color: $secondary-color;
         }
@@ -27,14 +27,14 @@
         width: 100%;
         height: 120px;
 
-        .avatar-img {
+        .avatarImg {
             width: 100%;
             height: 120px;
             background-size: cover;
             background-position: center;
         }
 
-        .avatar-icon {
+        .avatarIcon {
             text-align: center;
 
             span {

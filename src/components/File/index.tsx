@@ -22,19 +22,19 @@ class File extends React.Component<IFileProps, IFileState> {
 
         return (
             <div>
-                <div className={`file ${s[uploadingClass]}`}>
-                    <div className="avatar">
-                        {file.location ? (
-                            <div className="avatar-img" style={{backgroundImage: `url(${file.location}")`}}></div>
+                <div className={`${s.file} ${s[uploadingClass]}`}>
+                    <div className={s.avatar}>
+                        {file.fileType === "image" ? (
+                            <div className={s.avatarImg} style={{backgroundImage: `url(${file.location})`}}></div>
                         ) : (
-                            <div className="avatar-icon"><span className="icon-file-o"></span></div>
+                            <div className={s.avatarIcon}><span className="icon-file-o"></span></div>
                         )}
                     </div>
                     <div className="info">
-                        <a href={file.location} target="_blank" className="file-link">{file.name}</a>
+                        <a href={file.location} target="_blank">{file.name}</a>
                         <span>{fileSize(file.size).human()}</span>
                     </div>
-                    <div className="upload-status">{file.status} <span className="progress">{file.uploadProgress}</span></div>
+                    <div className={s.uploadStatus}>{file.status} <span>{file.uploadProgress}</span></div>
                 </div>
             </div>
         );

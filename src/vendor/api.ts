@@ -57,10 +57,10 @@ export const getRandomRoom = (): Promise<IApiResponse<IRoom>> => {
 }
 
 export const uploadFile = (roomName: string, file: File, onProgress: (progress: ProgressEvent) => void): Promise<IApiResponse<IFile>> => {
-    const fileAsBlob = new Blob([file]);
+    // const fileAsBlob = new Blob([file]);
     const formData = new FormData();
     formData.append("roomName", roomName);
-    formData.append("file", fileAsBlob);
+    formData.append("file", file);
 
     return futch(API_ENDPOINT + "/files", {
         method: "POST",

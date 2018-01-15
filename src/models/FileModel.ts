@@ -1,6 +1,8 @@
 import { observable, computed, action, toJS } from "mobx";
 import * as api from "../vendor/api";
 
+var IMAGE_MIMETYPES = ["image/jpeg", "image/png"];
+
 export class FileModel {
     @observable name: string;
     @observable location: string;
@@ -25,6 +27,16 @@ export class FileModel {
     @action
     setStatus(status: "idle" | "processing" | "uploading") {
         this.status = status;
+    }
+
+    @computed
+    get fileType() {
+        console.log(this.mimetype);
+        if (IMAGE_MIMETYPES.indexOf(this.mimetype) !== -1) {
+            return "image";
+        }
+
+        return "file";
     }
 
     @action

@@ -1,11 +1,12 @@
 import { observable, computed, action, toJS } from "mobx";
 import { secondsToTime } from "../helpers/utils";
-import * as api from "../vendor/api";
 import { RootStore } from "./";
+import { RoomModel } from "../models/";
+import * as api from "../vendor/api";
 
 export class RoomStore {
     rootStore: RootStore;
-    @observable room: api.Room | null = null;
+    @observable room: RoomModel | null = null;
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;     
@@ -15,29 +16,14 @@ export class RoomStore {
         const room = await api.getRandomRoom();
         if (room) {
             this.rootStore.routerStore.push(`/${room.data!.name}`);
-            this.room = room.data!;
-
-            api.listenRoom(room.data!.name).subscribe(file => {
-
-            });
+            this.room = new RoomModel(room.data!);
         }
     }
 
     async getRoom(roomName: string) {
         const room = await api.getRoom(roomName);
         if (room) {
-            this.room = room.data!;
+            this.room = new RoomModel(room.data!);
         }
-        console.log(toJS(this.room));
-    }
-
-    @computed
-    get timeLeft() {
-        if (!this.room) {
-            return null;
-        }
-        
-        // TODO
-        // return secondsToTime(this.room.timeLeft);
     }
 }

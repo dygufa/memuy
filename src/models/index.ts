@@ -1,0 +1,1 @@
+export { RoomModel } from "./RoomModel";

@@ -6,13 +6,12 @@ export class FileModel {
     @observable location: string;
     @observable size: number;
     @observable mimetype: string;
-    @observable uploading: boolean = true;
-    @observable uploadProgress: number;
+    @observable status: "idle" | "processing" | "uploading" = "idle";
+    @observable uploadProgress: string;
 
     constructor(file?: api.IFile) {
         if (file) {
             this._setData(file);
-            this.uploading = false;
         }        
     }
 
@@ -20,13 +19,17 @@ export class FileModel {
         this.name = file.name;
         this.location = file.location;
         this.size = file.size;
-        this.mimetype = file.mimetype;
-        
+        this.mimetype = file.mimetype;     
     }
 
     @action
-    setUploadProgress(progress: number) {
-        this.uploadProgress = progress;
+    setStatus(status: "idle" | "processing" | "uploading") {
+        this.status = status;
+    }
+
+    @action
+    setUploadProgress(uploadProgress: string) {
+        this.uploadProgress = uploadProgress;
     }
 
     @action

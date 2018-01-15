@@ -30,13 +30,23 @@ export class RoomModel {
     @action
     uploadFile(file: File) {
         const fileModel = new FileModel();
+        fileModel.setStatus("uploading");
         this.files = this.files.concat(fileModel);
 
         api.uploadFile(this.name, file, (progress) => {
-            fileModel.setUploadProgress(progress.loaded / progress.total * 100);
+            const progressPercentage = progress.loaded / progress.total * 100;
+            if (progressPercentage === 100) {
+                fileModel.setStatus("processing");
+            } else {
+                fileModel.setUploadProgress(progressPercentage.toString());
+            }
+
         }).then(res => {
             if (res.status) {
-                fileModel.setData(res.data!);
+                const file = res.data!;
+                fileModel.setData(file);
+                fileModel.setStatus("idle");
+                this.usedSpace += file.size;
             }
         });
     }

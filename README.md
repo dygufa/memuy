@@ -12,6 +12,9 @@ First, install all the project depencies by running: `yarn`. Don't use `npm`, ot
 In order to run webpack-dev-server on port 7005 you need to execute: `yarn run dev`.
 
 ## TODO:
+- [ ] Drag file
+- [ ] Copy url when clicking on it
+- [ ] About
 - [ ] PWA
 - [ ] Server-side rendering
 

@@ -1,0 +1,64 @@
+@import "global-style.scss";
+
+.file {
+    .upload-status {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        font-size: 20px;
+        top: 0;
+        left: 0;
+        background-color: rgba(255, 255, 255, 0.7);
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+        display: none;
+    }
+
+    &.uploading {
+        .upload-status {
+            display: flex;
+            color: $secondary-color;
+        }
+    }
+    
+    .avatar {
+        width: 100%;
+        height: 120px;
+
+        .avatar-img {
+            width: 100%;
+            height: 120px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .avatar-icon {
+            text-align: center;
+
+            span {
+                font-size: 100px;
+                color: $tertiary-color;
+            }
+        }
+    }
+
+    .info {
+        margin-top: 7px;
+        color: $tertiary-color;
+        display: flex;
+        justify-content: space-between;
+
+        a {
+            color: $tertiary-color;
+            text-decoration: none;
+            font-size: 13px;
+            width: 140px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+    }
+}

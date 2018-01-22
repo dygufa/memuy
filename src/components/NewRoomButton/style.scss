@@ -20,4 +20,17 @@
         color: $secondary-color;
     }
 }
+
+.goToNewRoomSmall {
+    display: none;
+}
         
+@media screen and (max-width: 380px) {
+    .goToNewRoom {
+        display: none;
+    }
+
+    .goToNewRoomSmall {
+        display: inline-block !important;
+    }
+}

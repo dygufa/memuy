@@ -37,6 +37,7 @@ export default class Main extends React.Component<IMainProps, {}> {
             return (
                 <SendFile
                     color="white"
+                    size="big"
                     onFileInputChange={this.onFileInputChange}
                 />
             );

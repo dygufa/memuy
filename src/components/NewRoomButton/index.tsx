@@ -25,9 +25,15 @@ interface INewRoomButtonState {};
 class NewRoomButton extends React.Component<INewRoomButtonProps, INewRoomButtonState> {
     public render(): JSX.Element {
         return (
-            <Button color="secondary" onClick={this.props.onClick}>
-                New Room
-            </Button>
+            <>
+                <Button className={s.goToNewRoom} color="secondary" onClick={this.props.onClick}>
+                    New Room
+                </Button>
+                
+                <Button className={s.goToNewRoomSmall} color="secondary" onClick={this.props.onClick}>
+                    +
+                </Button>
+            </>
         );
     }
 }

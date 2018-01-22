@@ -18,3 +18,12 @@
         font-size: 1.3em;
     }
 }
+
+@media screen and (max-width: 750px) {
+    .infoBar {
+        display: none;
+        margin-top: 20px;
+        text-align: center;
+        margin-right:  0;
+    }	
+}

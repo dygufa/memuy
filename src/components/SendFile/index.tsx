@@ -6,6 +6,7 @@ const s = require("./style.scss");
 interface ISendFileProps {
     color: "white" | "blue";
     onFileInputChange: (files: FileList) => void;
+    size: "medium" | "big"
 };
 
 interface ISendFileState {};
@@ -19,7 +20,8 @@ class SendFile extends React.Component<ISendFileProps, ISendFileState> {
 
     public render(): JSX.Element {
         return (
-            <div onClick={this.onClick} className={`${s.cloud} ${s[this.props.color]}`}>
+            <div onClick={this.onClick} className={`${s.cloudContainer} ${s[this.props.color]}`}>
+                <div className={`${s.cloud} ${s[this.props.size]}`}></div>
                 <span>Drag or click to upload a file</span>
                 <input 
                     className={s.fileInput} 

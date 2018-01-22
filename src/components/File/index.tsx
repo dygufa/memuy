@@ -30,11 +30,16 @@ class File extends React.Component<IFileProps, IFileState> {
                             <div className={s.avatarIcon}><span className="icon-file-o"></span></div>
                         )}
                     </div>
-                    <div className="info">
+                    <div className={s.info}>
                         <a href={file.location} target="_blank">{file.name}</a>
                         <span>{fileSize(file.size).human()}</span>
                     </div>
-                    <div className={s.uploadStatus}>{file.status} <span>{file.uploadProgress}</span></div>
+
+                    {file.status === "uploading" || file.status === "processing" ? (
+                        <div className={s.uploadStatus}>
+                            {file.status} <span>{file.uploadProgress}</span>
+                        </div>
+                    ) : null}                    
                 </div>
             </div>
         );

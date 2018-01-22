@@ -11,3 +11,27 @@
     flex: 1 0 200px;
     position: relative;
 }
+
+@media (min-width: 410px) {
+	.filebox {
+		max-width: calc(50% - 60px);
+	}
+}
+
+@media (min-width: 650px) {
+	.filebox {
+		max-width: calc((100%/3) - 60px);
+	}
+}
+
+@media (min-width: 850px) {
+	.filebox {
+		max-width: calc(25% - 60px);
+	}
+}
+
+@media (min-width: 1100px) {
+	.filebox {
+		max-width: calc(20% - 60px);
+	}
+}

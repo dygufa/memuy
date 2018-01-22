@@ -31,7 +31,6 @@ export class FileModel {
 
     @computed
     get fileType() {
-        console.log(this.mimetype);
         if (IMAGE_MIMETYPES.indexOf(this.mimetype) !== -1) {
             return "image";
         }

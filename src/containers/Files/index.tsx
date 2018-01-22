@@ -36,6 +36,7 @@ export default class Files extends React.Component<IFilesProps, {}> {
                 <FileBox>
                     <SendFile
                         color="blue"
+                        size="medium"
                         onFileInputChange={this.props.onFileInputChange}
                     />
                 </FileBox>            

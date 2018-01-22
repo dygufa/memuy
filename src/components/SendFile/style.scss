@@ -1,23 +1,47 @@
-.cloud {
+.cloudContainer {
 	cursor: pointer;
-	background-repeat: no-repeat;
-	width: 148px;
-	height: 180px;
 	flex-flow: row;
 	justify-content: center;
-	align-items: flex-end;
+	align-items: center;
 	text-align: center;
 	font-size: 1.2em;
 	display: flex;
-	
+	flex-direction: column;
+
 	&.white {
-		background-image: url("./cloud.png");
 		color: #fff;
+		
+		.cloud {
+			background-image: url("./cloud.png");
+		}
 	}
 
 	&.blue {
-		background-image: url("./blue-cloud.png");
 		color: #578fcc;
+
+		.cloud {
+			background-image: url("./blue-cloud.png");
+		}
+	}
+
+	.cloud {
+		background-repeat: no-repeat;
+		background-size: contain;
+
+		&.medium {
+			width: 103px;
+			height: 95px;
+			
+		}
+
+		&.big {
+			width: 148px;
+			height: 180px;
+		}
+	}
+	
+	& > span {
+		margin-top: 20px;
 	}
 }
 

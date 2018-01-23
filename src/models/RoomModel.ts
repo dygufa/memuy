@@ -21,8 +21,8 @@ export class RoomModel {
         this.expiresOn = room.expiresOn;
 
         api.listenRoom(this.name).subscribe(file => {
-            if (!this.files.find(f => f.name === file.name)) {
-                this.files = this.files.concat(new FileModel(file));
+            if (file.roomName === this.name && !this.files.find(f => f.name === file.file.name)) {
+                this.files = this.files.concat(new FileModel(file.file));
             }
         });
     }

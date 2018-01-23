@@ -2,8 +2,13 @@ import * as io from "socket.io-client";
 import { Observable } from 'rxjs/Observable';
 import { futch } from "../helpers/utils";
 
-const API_ENDPOINT = process.env.NODE_ENV === "development" ? "http://localhost:9090/v2" : "https://api.memuy.com/v2";
-const socket = io(API_ENDPOINT);
+const BASE_URL = process.env.NODE_ENV === "development" ? "http://localhost:9090" : "https://api.memuy.com";
+const PATH = "/v2";
+const API_ENDPOINT = BASE_URL + PATH;
+
+const socket = io(BASE_URL, {
+    path: PATH + "/socketio"
+});
 
 export interface IApiResponse<Payload> {
     status: string
@@ -29,6 +34,11 @@ export interface IFile {
     location: string
     size: number
     mimetype: string
+}
+
+export interface NewFileSocket {
+    roomName: string,
+    file: IFile
 }
 
 const getToken = () => {
@@ -57,7 +67,6 @@ export const getRandomRoom = (): Promise<IApiResponse<IRoom>> => {
 }
 
 export const uploadFile = (roomName: string, file: File, onProgress: (progress: ProgressEvent) => void): Promise<IApiResponse<IFile>> => {
-    // const fileAsBlob = new Blob([file]);
     const formData = new FormData();
     formData.append("roomName", roomName);
     formData.append("file", file);
@@ -85,12 +94,14 @@ export const getRoom = (roomName: string): Promise<IApiResponse<IRoom>> => {
     });
 }
 
-export const listenRoom = (roomName: string): Observable<IFile> => {
-    socket.emit("joinRoom", roomName);
+export const listenRoom = (roomName: string): Observable<NewFileSocket> => {
+    socket.on("connect", () => {
+        socket.emit("joinRoom", roomName);
+    });
 
     return Observable.create((observer: any) => {
-        socket.on("newFile", (res: any) => {
-            observer.next(res)
+        socket.on("newFile", (res: NewFileSocket) => {
+            observer.next(res);
         });
     });
 }

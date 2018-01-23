@@ -1,6 +1,6 @@
 import * as React from "react";
 import { inject, observer } from "mobx-react";
-import { RoomStore } from "../../stores";
+import { RoomStore, UIStore } from "../../stores";
 import { RouterStore } from "mobx-react-router";
 import { match } from "react-router-dom";
 
@@ -10,6 +10,8 @@ import { match } from "react-router-dom";
 
 import Header from "../Header/";
 import Main from "../Main/";
+import { DragEvent } from "react";
+const FileDrop = require("react-file-drop");
 
 /** 
  * Style
@@ -23,6 +25,7 @@ const s = require("./style.scss");
 
 interface IAppProps {
     roomStore?: RoomStore;
+    uiStore?: UIStore;
     routerStore?: RouterStore;
     match?: match<{
         roomId: string
@@ -31,7 +34,7 @@ interface IAppProps {
 
 interface IAppState {};
 
-@inject("routerStore", "roomStore")
+@inject("routerStore", "roomStore", "uiStore")
 @observer
 export default class App extends React.Component<IAppProps, IAppState> {
     componentDidMount() {
@@ -45,11 +48,38 @@ export default class App extends React.Component<IAppProps, IAppState> {
         }
     }
 
+    onFrameDragEnter = (e: React.DragEvent<any>) => {
+        this.props.uiStore!.draggingFile = true;
+    }
+
+    onFrameDragLeave = (e: React.DragEvent<any>) => {
+        this.props.uiStore!.draggingFile = false;
+    }
+
+    onFrameDrop = (e: React.DragEvent<any>) => {
+        this.props.uiStore!.draggingFile = false;
+    }
+
+    onDrop = (files: File[], e: React.DragEvent<any>) => {
+        const file = files[0];
+        this.props.roomStore!.room!.uploadFile(file);
+    }
+
     render() {
         return (
             <div className={s.container}>
                 <Header/>
                 <Main/>
+                <FileDrop 
+                    frame={document} 
+                    onFrameDragEnter={this.onFrameDragEnter}
+                    onFrameDragLeave={this.onFrameDragLeave}
+                    onFrameDrop={this.onFrameDrop}
+                    onDrop={this.onDrop}
+                />
+                {this.props.uiStore!.draggingFile ? (
+                    <div className={s.draggingFile}></div>
+                ) : null}
             </div>
         );
     }

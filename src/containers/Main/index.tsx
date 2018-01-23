@@ -35,11 +35,13 @@ export default class Main extends React.Component<IMainProps, {}> {
 
         if (this.props.roomStore!.room!.files.length === 0) {
             return (
-                <SendFile
-                    color="white"
-                    size="big"
-                    onFileInputChange={this.onFileInputChange}
-                />
+                <div style={{marginTop: "70px"}}>
+                    <SendFile
+                        color="white"
+                        size="big"
+                        onFileInputChange={this.onFileInputChange}
+                    />
+                </div>
             );
         }
 

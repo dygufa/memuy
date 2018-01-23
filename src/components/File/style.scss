@@ -15,11 +15,10 @@
         border-radius: 5px;
     }
 
-    &.uploading {
-        .uploadStatus {
-            display: flex;
-            color: $secondary-color;
-        }
+    
+    .uploadStatus {
+        display: flex;
+        color: $secondary-color;
     }
     
     .avatar {
@@ -36,7 +35,7 @@
         .avatarIcon {
             text-align: center;
 
-            span {
+            i {
                 font-size: 100px;
                 color: $tertiary-color;
             }

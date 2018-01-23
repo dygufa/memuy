@@ -35,7 +35,7 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
 
     public render(): JSX.Element {
         if (!this.props.roomStore!.room) {
-            return <div>Carregando...</div>;
+            return <div></div>;
         }
         
         return (

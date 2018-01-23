@@ -2,14 +2,13 @@ import * as React from "react";
 import { FileModel } from "../../models/"; 
 import { observer } from "mobx-react";
 const fileSize = require("file-size");
+import { capitalizeFirstLetter } from "../../helpers/utils";
 
 const s = require("./style.scss");
 
 interface IFileProps {
     file: FileModel;
 };
-
-// { JSON.stringify(this.props.file) }
 
 
 interface IFileState {};
@@ -27,7 +26,9 @@ class File extends React.Component<IFileProps, IFileState> {
                         {file.fileType === "image" ? (
                             <div className={s.avatarImg} style={{backgroundImage: `url(${file.location})`}}></div>
                         ) : (
-                            <div className={s.avatarIcon}><span className="icon-file-o"></span></div>
+                            <div className={s.avatarIcon}>
+                                <i className="fa fa-file-o" aria-hidden="true"></i>
+                            </div>
                         )}
                     </div>
                     <div className={s.info}>
@@ -37,7 +38,7 @@ class File extends React.Component<IFileProps, IFileState> {
 
                     {file.status === "uploading" || file.status === "processing" ? (
                         <div className={s.uploadStatus}>
-                            {file.status} <span>{file.uploadProgress}</span>
+                            {capitalizeFirstLetter(file.status)}... <span>{file.uploadProgress}</span>
                         </div>
                     ) : null}                    
                 </div>

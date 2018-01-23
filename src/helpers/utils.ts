@@ -23,3 +23,7 @@ export function futch(url: string, opts: any = {}, onProgress: any) {
         xhr.send(opts.body);
     });
 }
+
+export function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}

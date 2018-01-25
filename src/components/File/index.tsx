@@ -38,7 +38,7 @@ class File extends React.Component<IFileProps, IFileState> {
 
                     {file.status === "uploading" || file.status === "processing" ? (
                         <div className={s.uploadStatus}>
-                            {capitalizeFirstLetter(file.status)}... <span>{file.uploadProgress.toFixed(2)}</span>
+                            {capitalizeFirstLetter(file.status)}... <span>{file.uploadProgress === 0 ? "" : `${file.uploadProgress.toFixed(2)}%`}</span>
                         </div>
                     ) : null}                    
                 </div>

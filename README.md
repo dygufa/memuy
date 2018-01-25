@@ -17,6 +17,7 @@ In order to run webpack-dev-server on port 7005 you need to execute: `yarn run d
 ## TODO:
 - [x] Drag file
 - [ ] Copy url when clicking on it
+- [ ] Prevent duplicated file submission
 - [ ] About
 - [ ] PWA
 - [ ] Server-side rendering

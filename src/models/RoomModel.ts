@@ -48,7 +48,7 @@ export class RoomModel {
             if (progressPercentage === 100) {
                 fileModel.setStatus("processing");
             } else {
-                fileModel.setUploadProgress(progressPercentage.toString());
+                fileModel.setUploadProgress(progressPercentage);
             }
 
         }).then(res => {

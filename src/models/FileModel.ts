@@ -9,7 +9,7 @@ export class FileModel {
     @observable size: number;
     @observable mimetype: string;
     @observable status: "idle" | "processing" | "uploading" = "idle";
-    @observable uploadProgress: number;
+    @observable uploadProgress: number = 0;
     @observable hash: string;
 
     constructor(file?: api.IFile) {

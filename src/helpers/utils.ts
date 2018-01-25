@@ -1,3 +1,5 @@
+const browserMD5File = require("browser-md5-file");
+
 export function secondsToTime(seconds: number) {
     var hours = seconds / 3600 % 24;
     var minutes = seconds / 60 % 60;
@@ -26,4 +28,17 @@ export function futch(url: string, opts: any = {}, onProgress: any) {
 
 export function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
+export async function fileMd5(file: File) {
+    return new Promise<string>((resolve, reject) => {
+        browserMD5File(file, (err: any, md5: string) => {
+            if (err) {
+                reject(err);
+            }
+
+            resolve(md5);
+        });
+    });
 }

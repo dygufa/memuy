@@ -1,6 +1,7 @@
 import { observable, computed, action, toJS } from "mobx";
 import * as api from "../vendor/api";
-import { FileModel } from "."
+import { fileMd5 } from "../helpers/utils";
+import { FileModel } from ".";
 
 export class RoomModel {
     @observable name: string;
@@ -21,15 +22,24 @@ export class RoomModel {
         this.expiresOn = room.expiresOn;
 
         api.listenRoom(this.name).subscribe(file => {
-            if (file.roomName === this.name && !this.files.find(f => f.name === file.file.name)) {
-                this.files = this.files.concat(new FileModel(file.file));
+            if (file.roomName === this.name) {
+                const findFile = this.files.find(f => f.hash === file.file.hash);
+
+                if (findFile) {
+                    findFile.setData(file.file);
+                } else {
+                    this.files = this.files.concat(new FileModel(file.file));
+                }
             }
         });
     }
 
     @action
-    uploadFile(file: File) {
+    async uploadFile(file: File) {
+        const md5Hash = await fileMd5(file);
+
         const fileModel = new FileModel();
+        fileModel.setHash(md5Hash);
         fileModel.setStatus("uploading");
         this.files = this.files.concat(fileModel);
 

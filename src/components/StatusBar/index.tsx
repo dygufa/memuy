@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IRoom } from "../../vendor/api";
+import { RoomModel } from "../../models";
 import { inject, observer } from "mobx-react";
 const fileSize = require("file-size");
 const Countdown = require("react-countdown-now").default;
@@ -22,7 +22,7 @@ const s = require("./style.scss");
  */
 
 interface IStatusBarProps {
-    room: IRoom;
+    room: RoomModel;
     onNewRoom: () => void;
 };
 

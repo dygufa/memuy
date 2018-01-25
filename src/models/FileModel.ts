@@ -10,6 +10,7 @@ export class FileModel {
     @observable mimetype: string;
     @observable status: "idle" | "processing" | "uploading" = "idle";
     @observable uploadProgress: string;
+    @observable hash: string;
 
     constructor(file?: api.IFile) {
         if (file) {
@@ -22,6 +23,11 @@ export class FileModel {
         this.location = file.location;
         this.size = file.size;
         this.mimetype = file.mimetype;     
+    }
+
+    @action
+    setHash(hash: string) {
+        this.hash = hash;
     }
 
     @action

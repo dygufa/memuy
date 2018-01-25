@@ -34,6 +34,7 @@ export interface IFile {
     location: string
     size: number
     mimetype: string
+    hash: string
 }
 
 export interface NewFileSocket {

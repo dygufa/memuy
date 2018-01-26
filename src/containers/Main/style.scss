@@ -1,2 +1,8 @@
 @import "global-style.scss";
 
+.error {
+    color: $secondary-color;
+    font-size: 3em;
+    text-align: center;
+    margin-top: 100px;
+}

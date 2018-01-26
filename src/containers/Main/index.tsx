@@ -29,6 +29,10 @@ export default class Main extends React.Component<IMainProps, {}> {
     }
 
     render() {
+        if (this.props.roomStore!.error === "roomNotFound") {
+            return <div className={s.error}>Sorry, but I coudln't find this room :(</div>
+        }
+
         if (!this.props.roomStore!.room) {
             return <Loading />;
         }

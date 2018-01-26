@@ -35,21 +35,25 @@ class StatusBar extends React.Component<IStatusBarProps, IStatusBarState> {
 
         return (
             <div className={s.statusBar}>
-                <div className={s.infoBar}>
-                    Store limit: {fileSize(room.usedSpace).human()}/{fileSize(room.maxSpace).human()}
-                    <br/>
-                    Remaining room time: 
-                    <Countdown 
-                        date={room.expiresOn}
-                        renderer={(total: any) => {
-                            return " " + prettyMs(total.total);
-                        }}
-                    />
-                </div>
+                {this.props.room ? (
+                    <>
+                        <div className={s.infoBar}>
+                            Store limit: {fileSize(room.usedSpace).human()}/{fileSize(room.maxSpace).human()}
+                            <br/>
+                            Remaining room time: 
+                            <Countdown 
+                                date={room.expiresOn}
+                                renderer={(total: any) => {
+                                    return " " + prettyMs(total.total);
+                                }}
+                            />
+                        </div>
 
-                <div className={s.roomUrl}>
-                    <span>memuy.com/</span>{room ? room.name : "aa"}                    
-                </div>
+                        <div className={s.roomUrl}>
+                            <span>memuy.com/</span>{room.name}                    
+                        </div>
+                    </>
+                ) : null}
 
                 <div className={s.buttonWrapper}>
                     <NewRoomButton onClick={this.props.onNewRoom}/>

@@ -7,6 +7,7 @@ import * as api from "../vendor/api";
 export class RoomStore {
     rootStore: RootStore;
     @observable room: RoomModel | null = null;
+    @observable error: string | null;
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;     
@@ -14,7 +15,8 @@ export class RoomStore {
 
     async getNewRoom() {
         const room = await api.getRandomRoom();
-        if (room) {
+        if (room.status === "success") {
+            this.error = null;
             this.rootStore.routerStore.push(`/${room.data!.name}`);
             this.room = new RoomModel(room.data!);
         }
@@ -22,8 +24,12 @@ export class RoomStore {
 
     async getRoom(roomName: string) {
         const room = await api.getRoom(roomName);
-        if (room) {
+        
+        if (room.status === "fail") {
+            this.error = room.error!.name;
+        } else {
+            this.error = null;
             this.room = new RoomModel(room.data!);
-        }
+        }      
     }
 }

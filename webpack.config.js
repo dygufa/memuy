@@ -2,13 +2,16 @@ const path = require("path");
 const webpack = require("webpack");
 const combineLoaders = require("webpack-combine-loaders");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+const PRODUCTION_MODE = process.env.NODE_ENV === "production";
 
 module.exports = {
     entry: "./src/index",
     output: {
         publicPath: "/",
         filename: "bundle.[hash].js",
-        chunkFilename: "chunk.[name].[hash].js",
         path: path.join(__dirname, "/dist"),
         pathinfo: true
     },
@@ -73,9 +76,15 @@ module.exports = {
         new webpack.DefinePlugin({
             "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
         }),
-        new HtmlWebpackPlugin({title: "Memuy", filename: "index.html", template: "src/index.html"}),
-        new webpack
-            .optimize
-            .CommonsChunkPlugin({children: true, minChunks: 2, async: true})
+        new HtmlWebpackPlugin({
+            title: "Memuy", 
+            filename: "index.html", 
+            template: "src/index.html"
+        }),
+        ...(PRODUCTION_MODE ? [
+            new UglifyJsPlugin()
+        ]: [
+            new BundleAnalyzerPlugin()
+        ]),       
     ]
 }

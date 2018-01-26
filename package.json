@@ -40,6 +40,7 @@
     "tslint": "^5.4.3",
     "tslint-loader": "^3.5.3",
     "typescript": "^2.3.4",
+    "uglifyjs-webpack-plugin": "^1.1.6",
     "url-loader": "^0.5.7",
     "webpack": "^3.0.0",
     "webpack-combine-loaders": "^2.0.3",
@@ -50,6 +51,7 @@
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
     "node-sass": "^4.3.0",
-    "sass-loader": "^4.1.1"
+    "sass-loader": "^4.1.1",
+    "webpack-bundle-analyzer": "^2.9.2"
   }
 }

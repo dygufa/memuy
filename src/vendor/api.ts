@@ -2,7 +2,7 @@ import * as io from "socket.io-client";
 import { Observable } from 'rxjs/Observable';
 import { futch } from "../helpers/utils";
 
-const BASE_URL = process.env.NODE_ENV !== "development" ? "http://localhost:9090" : "https://api.memuy.com";
+const BASE_URL = process.env.NODE_ENV === "development" ? "http://localhost:9090" : "https://api.memuy.com";
 const PATH = "/v2";
 const API_ENDPOINT = BASE_URL + PATH;
 

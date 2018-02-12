@@ -42,3 +42,15 @@ export async function fileMd5(file: File) {
         });
     });
 }
+
+export function selectText(refNode: Node) {
+    let range, selection;
+
+    if (window.getSelection && document.createRange) {
+        selection = window.getSelection();
+        range = document.createRange();
+        range.selectNodeContents(refNode);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+}

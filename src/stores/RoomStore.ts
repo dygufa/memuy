@@ -32,4 +32,9 @@ export class RoomStore {
             this.room = new RoomModel(room.data!);
         }      
     }
+
+    @computed
+    public get roomUrl() {
+        return this.room ? `memuy.com/${this.room.name}` : "";
+    }
 }

@@ -1,4 +1,4 @@
-import { observable, computed, action, toJS } from "mobx";
+import { observable, action, toJS } from "mobx";
 import { secondsToTime } from "../helpers/utils";
 import { RootStore } from "./";
 import { RoomModel } from "../models/";
@@ -33,8 +33,4 @@ export class RoomStore {
         }      
     }
 
-    @computed
-    public get roomUrl() {
-        return this.room ? `memuy.com/${this.room.name}` : "";
-    }
 }

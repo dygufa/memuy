@@ -5,6 +5,7 @@ const fileSize = require("file-size");
 const Countdown = require("react-countdown-now").default;
 import * as prettyMs from "pretty-ms";
 import { selectText } from "../../helpers/utils";
+import * as copy from 'copy-to-clipboard';
 
 /**
  * Components
@@ -26,8 +27,6 @@ const s = require("./style.scss");
 interface IStatusBarProps {
     room: RoomModel;
     onNewRoom: () => void;
-    onCopyRoomUrl: (roomUrl: string) => void;
-    roomUrl: string;
 };
 
 interface IStatusBarState { };
@@ -37,12 +36,11 @@ class StatusBar extends React.Component<IStatusBarProps, IStatusBarState> {
 
     private onCopyRoomUrl = (e: React.MouseEvent<HTMLSpanElement>) => {
         selectText(e.currentTarget);
-        this.props.onCopyRoomUrl(this.props.roomUrl);
+        copy(this.props.room.roomUrl);
     }
 
     public render(): JSX.Element {
         const room = this.props.room;
-        const roomUrl = this.props.roomUrl;
 
         return (
             <div className={s.statusBar}>
@@ -62,7 +60,7 @@ class StatusBar extends React.Component<IStatusBarProps, IStatusBarState> {
 
                         <div className={s.roomUrl}>
                             <Tooltip text="Click to copy to clipboard">
-                                <span onClick={this.onCopyRoomUrl}>{roomUrl}</span>
+                                <span onClick={this.onCopyRoomUrl}>{room.roomUrl}</span>
                             </Tooltip>
                         </div>
                     </>

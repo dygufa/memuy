@@ -11,6 +11,7 @@ export class RoomModel {
     @observable files: FileModel[];
     @observable createdAt: Date;
     @observable expiresOn: Date;
+    @observable roomUrl: string;
 
     constructor(room: api.IRoom) {
         this.name = room.name;
@@ -20,6 +21,7 @@ export class RoomModel {
         this.files = room.files.map(f => new FileModel(f));
         this.createdAt = room.createdAt;
         this.expiresOn = room.expiresOn;
+        this.roomUrl = `memuy.com/${room.name}`;
 
         api.listenRoom(this.name).subscribe(file => {
             if (file.roomName === this.name) {

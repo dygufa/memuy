@@ -1,4 +1,4 @@
-import { observable, computed, action, toJS } from "mobx";
+import { observable, action, toJS } from "mobx";
 import { secondsToTime } from "../helpers/utils";
 import { RootStore } from "./";
 import { RoomModel } from "../models/";
@@ -7,7 +7,7 @@ import * as api from "../vendor/api";
 export class RoomStore {
     rootStore: RootStore;
     @observable room: RoomModel | null = null;
-    @observable error: string | null;
+    @observable error!: string | null;
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;     
@@ -32,4 +32,5 @@ export class RoomStore {
             this.room = new RoomModel(room.data!);
         }      
     }
+
 }

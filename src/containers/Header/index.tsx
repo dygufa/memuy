@@ -40,7 +40,7 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
                 <div className={s.helperBars}>                    
                     <StatusBar
                         room={this.props.roomStore!.room!}
-                        onNewRoom={() => this.onNewRoom()}
+                        onNewRoom={this.onNewRoom}
                     />                   
                 </div>
             </header>

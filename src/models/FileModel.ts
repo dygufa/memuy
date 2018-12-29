@@ -4,13 +4,13 @@ import * as api from "../vendor/api";
 var IMAGE_MIMETYPES = ["image/jpeg", "image/png"];
 
 export class FileModel {
-    @observable name: string;
-    @observable location: string;
-    @observable size: number;
-    @observable mimetype: string;
+    @observable name!: string;
+    @observable location!: string;
+    @observable size!: number;
+    @observable mimetype!: string;
     @observable status: "idle" | "processing" | "uploading" = "idle";
     @observable uploadProgress: number = 0;
-    @observable hash: string;
+    @observable hash!: string;
 
     constructor(file?: api.IFile) {
         if (file) {

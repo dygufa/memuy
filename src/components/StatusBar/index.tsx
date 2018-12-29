@@ -4,12 +4,15 @@ import { inject, observer } from "mobx-react";
 const fileSize = require("file-size");
 const Countdown = require("react-countdown-now").default;
 import * as prettyMs from "pretty-ms";
+import { selectText } from "../../helpers/utils";
+import * as copy from 'copy-to-clipboard';
 
 /**
  * Components
  */
 
 import NewRoomButton from "../NewRoomButton/";
+import Tooltip from "../Tooltip";
 
 /**
  * Style
@@ -26,10 +29,16 @@ interface IStatusBarProps {
     onNewRoom: () => void;
 };
 
-interface IStatusBarState {};
+interface IStatusBarState { };
 
 @observer
 class StatusBar extends React.Component<IStatusBarProps, IStatusBarState> {
+
+    private onCopyRoomUrl = (e: React.MouseEvent<HTMLSpanElement>) => {
+        selectText(e.currentTarget);
+        copy(this.props.room.roomUrl);
+    }
+
     public render(): JSX.Element {
         const room = this.props.room;
 
@@ -39,9 +48,9 @@ class StatusBar extends React.Component<IStatusBarProps, IStatusBarState> {
                     <>
                         <div className={s.infoBar}>
                             Store limit: {fileSize(room.usedSpace).human()}/{fileSize(room.maxSpace).human()}
-                            <br/>
-                            Remaining room time: 
-                            <Countdown 
+                            <br />
+                            Remaining room time:
+                            <Countdown
                                 date={room.expiresOn}
                                 renderer={(total: any) => {
                                     return " " + prettyMs(total.total);
@@ -50,13 +59,15 @@ class StatusBar extends React.Component<IStatusBarProps, IStatusBarState> {
                         </div>
 
                         <div className={s.roomUrl}>
-                            <span>memuy.com/</span>{room.name}                    
+                            <Tooltip text="Click to copy to clipboard">
+                                <span onClick={this.onCopyRoomUrl}>{room.roomUrl}</span>
+                            </Tooltip>
                         </div>
                     </>
                 ) : null}
 
                 <div className={s.buttonWrapper}>
-                    <NewRoomButton onClick={this.props.onNewRoom}/>
+                    <NewRoomButton onClick={this.props.onNewRoom} />
                 </div>
             </div>
         );

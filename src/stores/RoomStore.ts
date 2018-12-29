@@ -7,7 +7,7 @@ import * as api from "../vendor/api";
 export class RoomStore {
     rootStore: RootStore;
     @observable room: RoomModel | null = null;
-    @observable error: string | null;
+    @observable error!: string | null;
 
     constructor(rootStore: RootStore) {
         this.rootStore = rootStore;     

@@ -12,7 +12,7 @@ interface ISendFileProps {
 interface ISendFileState {};
 
 class SendFile extends React.Component<ISendFileProps, ISendFileState> {
-    private fileInputRef: HTMLInputElement;
+    private fileInputRef!: HTMLInputElement;
 
     private onClick = () => {
         this.fileInputRef.click();

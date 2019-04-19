@@ -6,10 +6,10 @@ import DevTools from "mobx-react-devtools";
 import {Provider} from "mobx-react";
 import {syncHistoryWithStore} from "mobx-react-router";
 import { Route } from "react-router-dom";
-import createBrowserHistory from 'history/createBrowserHistory';
+import * as history from 'history';
 import { Router } from 'react-router'
 
-const browserHistory = createBrowserHistory()
+const browserHistory = history.createBrowserHistory();
 
 import { RootStore } from "./stores";
 
@@ -17,11 +17,11 @@ import App from "./containers/App";
 
 const rootStore = new RootStore();
 
-const history = syncHistoryWithStore(browserHistory, rootStore.routerStore);
+const routeHistory = syncHistoryWithStore(browserHistory, rootStore.routerStore);
 
 ReactDOM.render(
 <Provider {...rootStore}>
-    <Router history={history}>
+    <Router history={routeHistory}>
         <Route path="/:roomId?" component={App} />
     </Router>
 </Provider>, document.getElementById('root'));

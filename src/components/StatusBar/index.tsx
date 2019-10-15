@@ -3,9 +3,9 @@ import { RoomModel } from "../../models";
 import { inject, observer } from "mobx-react";
 const fileSize = require("file-size");
 const Countdown = require("react-countdown-now").default;
-import * as prettyMs from "pretty-ms";
+import prettyMs from "pretty-ms";
 import { selectText } from "../../helpers/utils";
-import * as copy from 'copy-to-clipboard';
+import copy from 'copy-to-clipboard';
 
 /**
  * Components

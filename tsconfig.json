@@ -4,10 +4,18 @@
         "strict": true,
         "sourceMap": true,
         "noImplicitAny": true,
-        "module": "commonjs",
-        "target": "es6",
+        "module": "es6",
+        "target": "es5",
+        "lib": [
+            "es2018",
+            "dom"
+        ],
+        "moduleResolution": "node",
         "jsx": "react",
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true
     },
     "include": [
         "./src/**/*"

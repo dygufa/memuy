@@ -1,8 +1,8 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const TerserPlugin = require('terser-webpack-plugin');
 
 const PRODUCTION_MODE = process.env.NODE_ENV === "production";
 
@@ -94,7 +94,12 @@ module.exports = {
             template: "src/index.html"
         }),
         ...(PRODUCTION_MODE ? [
-            new UglifyJsPlugin()
+            new TerserPlugin({
+                parallel: true,
+                terserOptions: {
+                    ecma: 6,
+                },
+            }),
         ] : [
                 new BundleAnalyzerPlugin()
             ]),

@@ -1,9 +1,8 @@
 const path = require("path");
 const webpack = require("webpack");
-const combineLoaders = require("webpack-combine-loaders");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const TerserPlugin = require('terser-webpack-plugin');
 
 const PRODUCTION_MODE = process.env.NODE_ENV === "production";
 
@@ -22,41 +21,54 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                loader: "babel-loader?presets[]=es2015,plugins[]=transform-runtime!awesome-typescript-loa" +
-                        "der"
+                use: [
+                    {
+                        loader: "babel-loader",
+                        options: {
+                            presets: ["@babel/preset-env"],
+                            plugins: [["@babel/plugin-transform-runtime"]],
+                        },
+                    },
+                    {
+                        loader: "awesome-typescript-loader",
+                    },
+                ],
             }, {
                 test: /\.css/,
-                loader: combineLoaders([
+                use: [
                     {
                         loader: "style-loader"
                     }, {
                         loader: "css-loader",
-                        query: {
-                            modules: false,
-                            importLoaders: 1,
-                            localIdentName: "[local]"
+                        options: {
+                            modules: {
+                                localIdentName: "[local]"
+                            }
                         }
                     }
-                ])
+                ]
             }, {
                 test: /\.scss$/,
-                loader: combineLoaders([
+                use: [
                     {
                         loader: "style-loader"
                     }, {
                         loader: "css-loader",
-                        query: {
-                            modules: true,
-                            importLoaders: 1,
-                            localIdentName: "[name]__[local]___[hash:base64:5]"
+                        options: {
+                            modules: {
+                                localIdentName: "[name]__[local]___[hash:base64:5]"
+
+                            }
                         }
                     }, {
                         loader: "sass-loader",
-                        query: {
-                            includePaths: ["./src"]
+                        options: {
+                            sassOptions: {
+                                includePaths: ["./src"]
+                            }
                         }
                     }
-                ])
+                ]
             }, {
                 test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/,
                 loader: "url-loader?mimetype=application/font-woff"
@@ -77,14 +89,19 @@ module.exports = {
             "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
         }),
         new HtmlWebpackPlugin({
-            title: "Memuy", 
-            filename: "index.html", 
+            title: "Memuy",
+            filename: "index.html",
             template: "src/index.html"
         }),
         ...(PRODUCTION_MODE ? [
-            new UglifyJsPlugin()
-        ]: [
-            new BundleAnalyzerPlugin()
-        ]),       
+            new TerserPlugin({
+                parallel: true,
+                terserOptions: {
+                    ecma: 6,
+                },
+            }),
+        ] : [
+                new BundleAnalyzerPlugin()
+            ]),
     ]
 }
